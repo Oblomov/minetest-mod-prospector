@@ -67,10 +67,62 @@ minetest.register_on_mods_loaded(function()
 			visible_ores[n] = k
 		end
 	end
-	minetest.log(dump(prospector.ores))
-	minetest.log(dump(visible_ores))
+	--minetest.log(dump(prospector.ores))
+	--minetest.log(dump(visible_ores))
 
 end)
+
+local detect_ores = function(player)
+	local player_pos = player:get_pos()
+	local player_name = player:get_player_name()
+
+	-- adjust player position to eye level, roundeded to integer
+	player_pos.y = player_pos.y + 1
+	player_pos = vector.round(player_pos)
+
+	local range = 16 -- TODO
+
+	local pos_low = vector.subtract(player_pos, range)
+	local pos_hi = vector.add(player_pos, range)
+
+	local nodes_found = minetest.find_nodes_in_area(pos_low, pos_hi, visible_ores, true)
+	for _, node_pos in pairs(nodes_found) do
+		local node = minetest.get_node(node_pos)
+		local name = node.name
+		local drop = minetest.registered_nodes[name].drop
+		local drop_tex = minetest.registered_items[drop].inventory_image
+
+		--minetest.log( dump({name, drop, dist}) )
+
+		local timescale = 0.3
+
+		local node_dir = vector.subtract(player_pos, node_pos)
+		local dist = vector.length(node_dir)
+
+		local scale = 2
+		local minscale = dist/timescale
+		local maxscale = dist*scale/timescale
+
+		minetest.add_particlespawner({
+			player = player_name,
+			amount = 4,
+			time = timescale,
+			minpos = vector.subtract(node_pos, 0.5),
+			maxpos = vector.add(node_pos, 0.5),
+			minvel = vector.divide(node_dir, minscale),
+			maxvel = vector.divide(node_dir, maxscale),
+			minacc = vector.new(),
+			maxacc = vector.new(),
+			minexptime = minscale,
+			maxexptime = maxscale,
+			texture = drop_tex,
+			collision_detection = false,
+			minsize = 0.1,
+			maxsize = 0.3,
+			glow = LIGHT_MAX-1,
+		})
+	end
+end
 
 -- Items
 
@@ -89,7 +141,7 @@ minetest.register_craftitem("prospector:prospecting_kit", {
 	on_use = function(itemstack, user, pointed_thing)
 		map.update_hud_flags(user)
 		binoculars.update_player_property(user)
-		-- TODO actually show visible_ores
+		detect_ores(user)
 	end,
 })
 
