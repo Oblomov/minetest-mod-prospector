@@ -16,7 +16,7 @@ local recovery_time = minetest.setting_get("prospector.recovery_time") or 16
 prospector = {}
 
 -- Document version
-prospector.VERSION = 100
+prospector.VERSION = 101
 
 -- Table of last uses
 prospector.last_use = {}
