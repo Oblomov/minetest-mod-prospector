@@ -126,7 +126,11 @@ local detect_ores = function(player)
 	for _, node_pos in pairs(nodes_found) do
 		local node = minetest.get_node(node_pos)
 		local name = node.name
+
+		-- the drop might have an amount, but we only only care about the item name
 		local drop = minetest.registered_nodes[name].drop
+		drop = drop:match("^[^ ]+")
+
 		local drop_tex = minetest.registered_items[drop].inventory_image
 
 		--minetest.log( dump({name, drop, dist}) )
