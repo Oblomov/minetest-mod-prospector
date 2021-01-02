@@ -8,7 +8,7 @@ local S = minetest.get_translator("map")
 
 -- Settings
 
-local show_ores_range = minetest.setting_get("prospector.show_ores_range") or 16
+local ore_detection_range = minetest.setting_get("prospector.ore_detection_range") or 16
 local recovery_time = minetest.setting_get("prospector.recovery_time") or 16
 
 -- Global table to allow other mods to register special nodes
@@ -117,7 +117,7 @@ local detect_ores = function(player)
 	player_pos.y = player_pos.y + 1
 	player_pos = vector.round(player_pos)
 
-	local range = show_ores_range
+	local range = ore_detection_range
 
 	local pos_low = vector.subtract(player_pos, range)
 	local pos_hi = vector.add(player_pos, range)
@@ -187,7 +187,7 @@ minetest.register_craftitem("prospector:prospecting_kit", {
 	groups = { flammable = 3 },
 
 	on_use = function(itemstack, user, pointed_thing)
-		if show_ores_range > 0 then
+		if ore_detection_range > 0 then
 			detect_ores(user)
 		end
 		map.update_hud_flags(user)

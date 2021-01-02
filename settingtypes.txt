@@ -1,6 +1,6 @@
 # Range (in nodes) of the prospecting kit's ore visibility action
 # Set to 0 or a negative number to disable the feature
-show_ores_range int 16
+ore_detection_range (Ore detection range) int 16
 
 # Number of seconds before the prospecting kit can be used again.
 # Note that during this recovery time the map/zoom functionality
