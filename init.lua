@@ -1,4 +1,7 @@
--- Add prospecting_kit to enable radar view in survival mode
+-- Prospector mod
+-- This mod provides a prospecting kit, that combines the capabilities of the mapping kit
+-- and binoculars, enables radar view in the minimap, and can give hints about the location
+-- of hidden ores.
 
 -- Load support for MT game translation.
 local S = minetest.get_translator("map")
@@ -126,14 +129,21 @@ end
 
 -- Items
 
+local kit_name = S("Prospecting kit")
+
 minetest.register_craftitem("prospector:prospecting_lens", {
 	description = S("Prospecting lens"),
+	_doc_items_longdesc = S("A lens giving special detecting capabilities when assembled into a @1.", kit_name),
+	_doc_items_usagehelp = S("Combine two lenses with the binculars and mapping kit to obtain a @1.", kit_name),
 	inventory_image = "prospector_prospecting_lens.png",
 })
 
 
 minetest.register_craftitem("prospector:prospecting_kit", {
-	description = S("Prospecting kit"),
+	description = kit_name,
+	_doc_items_longdesc = S("Combines and improves the capabilities of the mapping kit and binoculars."),
+	_doc_items_usagehelp = S("Keep this in your inventory to enable the minimap and zoom features.") ..
+		" " .. S("Use (click) to get an idea of where ores might be around you"),
 	inventory_image = "map_mapping_kit.png^[combine:16x16:4,4=binoculars_binoculars.png\\^[resize\\:8x8",
 	stack_max = 1,
 	groups = { flammable = 3 },

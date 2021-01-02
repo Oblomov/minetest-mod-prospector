@@ -1,10 +1,14 @@
 Prospector mod
 ===========
 
-This mod introduces the propsecting kit, which enables the minimap radar view
-even in survival mode. The kit is built combining the mapping kit, binoculars,
-and two prospecting lenses, assembled from 4 gold ingots, 4 diamond and 1 mese
-crystal each. Recipes:
+This mod provides a prospecting kit, that combines the capabilities of the mapping kit
+and binoculars, enables radar view in the minimap, and can give hints about the location
+of hidden ores.
+
+The kit is built combining the mapping kit, binoculars, and two prospecting
+lenses, assembled from 4 gold ingots, 4 diamond and 1 mese crystal each.
+
+Recipes:
 
 Lens:
 
@@ -23,6 +27,9 @@ When the prospecting kit is in the (main) inventory, the minimap can be enabled
 with the appropriate key (cycling through both aerial and radar views),
 and the user can use zoom view (with a FOV that is even smaller than
 the one provided by the binoculars).
+
+Usingthe prospecting kit will make all surrounding ores emit glowing particles
+that float towards the user.
 
 License
 -------
