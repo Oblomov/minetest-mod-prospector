@@ -28,8 +28,13 @@ with the appropriate key (cycling through both aerial and radar views),
 and the user can use zoom view (with a FOV that is even smaller than
 the one provided by the binoculars).
 
-Usingthe prospecting kit will make all surrounding ores emit glowing particles
-that float towards the user.
+Using the prospecting kit will make all surrounding ores emit glowing particles
+that float towards the user. Using this feature will provisionally disable all
+uses of the kit (including mapping and binoculars) for a few seconds.
+
+The recovery time and the range of the detection function can be set via the
+config options `prospector.recovery_time` and `prospector.show_ores_range`.
+Setting `show_ores_range` to 0 disables the ore detection feature altogether.
 
 License
 -------

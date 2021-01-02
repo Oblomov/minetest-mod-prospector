@@ -6,9 +6,30 @@
 -- Load support for MT game translation.
 local S = minetest.get_translator("map")
 
+-- Settings
+
+local show_ores_range = minetest.setting_get("prospector.show_ores_range") or 16
+local recovery_time = minetest.setting_get("prospector.recovery_time") or 16
+
 -- Global table to allow other mods to register special nodes
 -- the prospector might identify
 prospector = {}
+
+-- Table of last uses
+prospector.last_use = {}
+
+-- Returns nil if the player does not have the kit,
+-- and otherwise returns true or false depending on expiration of the recovery time
+function prospector.can_be_used_by(player)
+	if not player:get_inventory():contains_item("main", "prospector:prospecting_kit") then
+		return nil
+	end
+
+	local player_name = player:get_player_name() or '_?_'
+	local last_use = prospector.last_use[player_name] or 0
+	local now = minetest.get_gametime()
+	return (now - last_use > recovery_time), last_use + recovery_time - now
+end
 
 -- To specify that a node should NOT be seen by the prospecting kit,
 -- add it as key to prospector.ores with a negative value
@@ -30,9 +51,9 @@ minetest.register_on_mods_loaded(function()
 
 	function map.update_hud_flags(player)
 		local flags = {}
-		if player:get_inventory():contains_item("main", "prospector:prospecting_kit") then
-			flags.minimap = true
-			flags.minimap_radar = true
+		if prospector.can_be_used_by(player) then
+			flags.minimap = active
+			flags.minimap_radar = active
 			player:hud_set_flags(flags)
 		else
 			old_map_update_func(player)
@@ -43,7 +64,7 @@ minetest.register_on_mods_loaded(function()
 	local old_binoculars_update_func = binoculars.update_player_property
 
 	function binoculars.update_player_property(player)
-		if player:get_inventory():contains_item("main", "prospector:prospecting_kit") then
+		if prospector.can_be_used_by(player) then
 			local new_zoom_fov = 8
 
 			-- Only set property if necessary to avoid player mesh reload
@@ -79,11 +100,21 @@ local detect_ores = function(player)
 	local player_pos = player:get_pos()
 	local player_name = player:get_player_name()
 
+	local can_use, delta = prospector.can_be_used_by(player)
+	if not can_use then
+		minetest.chat_send_player(player_name, S("The prospecting kit is still recharging.") ..
+			" " .. S("@1 seconds left",  math.ceil(delta)))
+		return
+	end
+
+	-- mark as used now
+	prospector.last_use[player_name] = minetest.get_gametime()
+
 	-- adjust player position to eye level, roundeded to integer
 	player_pos.y = player_pos.y + 1
 	player_pos = vector.round(player_pos)
 
-	local range = 16 -- TODO
+	local range = show_ores_range
 
 	local pos_low = vector.subtract(player_pos, range)
 	local pos_hi = vector.add(player_pos, range)
@@ -149,9 +180,11 @@ minetest.register_craftitem("prospector:prospecting_kit", {
 	groups = { flammable = 3 },
 
 	on_use = function(itemstack, user, pointed_thing)
+		if show_ores_range > 0 then
+			detect_ores(user)
+		end
 		map.update_hud_flags(user)
 		binoculars.update_player_property(user)
-		detect_ores(user)
 	end,
 })
 
