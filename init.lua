@@ -55,8 +55,8 @@ minetest.register_on_mods_loaded(function()
 	function map.update_hud_flags(player)
 		local flags = {}
 		if prospector.can_be_used_by(player) then
-			flags.minimap = active
-			flags.minimap_radar = active
+			flags.minimap = true
+			flags.minimap_radar = true
 			player:hud_set_flags(flags)
 		else
 			old_map_update_func(player)
