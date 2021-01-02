@@ -1,5 +1,8 @@
 Prospector mod
-===========
+==============
+
+Description
+-----------
 
 This mod provides a prospecting kit, that combines the capabilities of the mapping kit
 and binoculars, enables radar view in the minimap, and can give hints about the location
@@ -10,16 +13,16 @@ lenses, assembled from 4 gold ingots, 4 diamond and 1 mese crystal each.
 
 Recipes:
 
-Lens:
+Lens::
 
-GDG
-DMD
-GDG
+        GDG
+        DMD
+        GDG
 
-Kit:
+Kit::
 
-LBL
- M
+        LBL
+         M
 
 where L is the lens, B the binoculars, M the mapping kit.
 
@@ -33,8 +36,9 @@ that float towards the user. Using this feature will provisionally disable all
 uses of the kit (including mapping and binoculars) for a few seconds.
 
 The recovery time and the range of the detection function can be set via the
-config options `prospector.recovery_time` and `prospector.show_ores_range`.
-Setting `show_ores_range` to 0 disables the ore detection feature altogether.
+config options ``prospector.recovery_time`` and ``prospector.show_ores_range``.
+Setting ``prospector.show_ores_range`` to 0 disables the ore detection feature
+altogether.
 
 License
 -------
