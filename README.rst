@@ -36,8 +36,8 @@ that float towards the user. Using this feature will provisionally disable all
 uses of the kit (including mapping and binoculars) for a few seconds.
 
 The recovery time and the range of the detection function can be set via the
-config options ``prospector.recovery_time`` and ``prospector.show_ores_range``.
-Setting ``prospector.show_ores_range`` to 0 disables the ore detection feature
+config options ``prospector.recovery_time`` and ``prospector.ore_detection_range``.
+Setting ``prospector.ore_detection_range`` to 0 disables the ore detection feature
 altogether.
 
 License
